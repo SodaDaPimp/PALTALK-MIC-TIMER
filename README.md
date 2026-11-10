@@ -8,8 +8,8 @@
 
 Paltalk Mic Timer keeps your Paltalk room fair. It times whoever is on the mic, posts warnings in the room, **dots (restricts) anyone who goes over the limit**, explains why, and removes the dot a few seconds later. Your admins can also dot and undot from chat with `!dot-nickname` and `!undot-nickname`. One small program, no installer.
 
-<!-- Add a screenshot here, with descriptive alt text, for example:
-![Paltalk Mic Timer showing the speaker on the mic, the mic queue and the activity log](docs/screenshot.png) -->
+<!-- [Add a screenshot here, with descriptive alt text, for example:
+![Paltalk Mic Timer showing the speaker on the mic, the mic queue and the activity log]([[https://raw.githubusercontent.com/SodaDaPimp/PALTALK-MIC-TIMER/refs/heads/main/Screenshot%202026-11-10%20100218.png]
 
 ## Table of contents
 
@@ -206,25 +206,7 @@ Paltalk's right-click menu is driven with the mouse, so the timer moves your poi
 
 ### Which version of Windows do I need?
 Windows 10 or 11.
-
-## Build from source
-
-Most people can just download the `.exe`. To build it yourself:
-
-```text
-git clone https://github.com/SodaDaPimp/PALTALK-MIC-TIMER.git
-cd PALTALK-MIC-TIMER
-```
-
-Then double-click **Build EXE.bat**. It uses Visual Studio or MinGW-w64 if you have them. Otherwise it installs a free compiler through Python (`pip install ziglang`, about 80 MB, one time).
-
-The core logic (timer engine, settings, chat-command parsing, menu reading) is portable C++17 with automated tests that use a pretend Windows and a pretend Paltalk. On Linux, macOS or WSL:
-
-```text
-sh run_tests.sh
-```
-
-## Credits and disclaimer
+```## Credits and disclaimer
 
 **Paltalk Mic Timer** — coded in C++ by **SodaDaPimp**.
 
