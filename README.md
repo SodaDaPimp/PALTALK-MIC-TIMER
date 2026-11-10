@@ -8,7 +8,6 @@
 
 Paltalk Mic Timer keeps your Paltalk room fair. It times whoever is on the mic, posts warnings in the room, **dots (restricts) anyone who goes over the limit**, explains why, and removes the dot a few seconds later. Your admins can also dot and undot from chat with `!dot-nickname` and `!undot-nickname`. One small program, no installer.
 
-<!-- [Add a screenshot here, with descriptive alt text, for example:
 ![Paltalk Mic Timer showing the speaker on the mic, the mic queue and the activity log]([[https://raw.githubusercontent.com/SodaDaPimp/PALTALK-MIC-TIMER/refs/heads/main/Screenshot%202026-11-10%20100218.png]
 
 ## Table of contents
