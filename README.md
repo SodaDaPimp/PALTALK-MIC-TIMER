@@ -173,7 +173,7 @@ Join the room in Paltalk first, then click **Refresh**. If Paltalk was started a
 - Make sure **Test mode** is unticked.
 - Make sure you are an admin in the room.
 - Make sure the Paltalk room window is visible on screen.
-- Open the **Tools** tab, click **Inspect Paltalk**, and send the files it saves in the `logs` folder.
+- Open the **Tools** tab, click **Inspect Paltalk**, and send the files it saves in the `logs` folder to SodaDaPimp.
 
 **`!dot` or `!undot` is ignored**
 The person typing it must be on the admins list, spelled exactly as in Paltalk. Click **Save** after changing the list.
