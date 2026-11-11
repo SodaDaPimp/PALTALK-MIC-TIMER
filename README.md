@@ -1,4 +1,5 @@
 # Paltalk Mic Timer
+https://www.youtube.com/watch?v=EVKKVns7Xj4
 
 **A Windows mic timer, mic queue and auto-dot tool for Paltalk room admins. Written in C++.**
 
