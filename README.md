@@ -693,20 +693,7 @@ Open Tools, click **Run diagnostics**, and send the report plus the newest file 
 
 ## Build from source
 
-Most people can just download the `.exe` from the [Releases page](https://github.com/SodaDaPimp/PALTALK-MIC-TIMER/releases). To build it yourself:
-
-```text
-git clone https://github.com/SodaDaPimp/PALTALK-MIC-TIMER.git
-cd PALTALK-MIC-TIMER
-```
-
-Then double-click **Build EXE.bat**. It uses Visual Studio or MinGW-w64 if you have them. Otherwise it installs a free compiler through Python (`pip install ziglang`, about 80 MB, one time).
-
-The core logic (timer engine, settings, chat-command parsing, menu reading) is portable C++17 with automated tests that use a pretend Windows and a pretend Paltalk. On Linux, macOS or WSL:
-
-```text
-sh run_tests.sh
-```
+Everyone can just download the `.ZIP` from the [Releases page](https://github.com/SodaDaPimp/PALTALK-MIC-TIMER/releases).
 
 ## Credits and disclaimer
 
