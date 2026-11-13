@@ -8,6 +8,8 @@
 
 ![Screenshot of PALTALK MIC TIMER 2.0](https://github.com/SodaDaPimp/PALTALK-MIC-TIMER/blob/main/My%20Snapshot_3.jpg?raw=true)
 
+![PALTALK MIC TIMER 2.0 after the update](https://github.com/SodaDaPimp/PALTALK-MIC-TIMER/blob/main/paltalk%20timer%20update.png?raw=true)
+
 ## Table of contents
 
 - [What it does](#what-it-does)
@@ -32,8 +34,8 @@ PALTALK MIC TIMER 2.0 keeps a Paltalk voice room fair. It watches who is on the 
 - Times whoever is on the mic and shows the mic queue.
 - Posts a time check, a final warning and a time's-up message in the room.
 - Dots people who go over the limit, explains why in the room, then removes the dot.
-- Keeps the mic queue in order and dots anyone who takes the mic ahead of people still waiting, so the next person in line can talk.
-- A **Free mic** switch turns the timer off for everyone: no time limit, no warnings, no dots. With it off, three rules for **who may take the mic**: no jumping the line, only people in the queue, or strict (everyone who takes the mic without being in the queue is dotted, even on a free mic). Each rule includes the one before it, and whoever is dotted is told why in the room.
+- Keeps the mic queue in order and dots anyone who takes the mic out of turn, so the next person in line can talk.
+- A **Free mic** switch turns the timer off for everyone: no time limit, no warnings, no dots. With it off, the mic queue is **strict**: only people in the queue may take the mic. Anyone who takes it without raising a hand first, or ahead of people who are still waiting, is dotted at once and told why in the room.
 - Lets admins dot and undot from the chat with `!dot-nickname` and `!undot-nickname`.
 - Posts a mic check if the person on the mic goes silent.
 - Shows an animated poster card in the banner. Use the built-in waving-flag poster, **your own picture (a GIF, PNG or JPG)**, or switch it off.
@@ -52,7 +54,7 @@ Jump to: [Added](#added-in-20) | [Changed](#changed-in-20) | [Fixed](#fixed-in-2
 
 - **Rewritten in C++.** A native Windows program in one small `.exe`. No Python and nothing to install.
 - **A practice room.** Choose *Practice room (no Paltalk needed)* in the Room box and press **Take mic** for a pretend person, to watch a whole turn in seconds (set the limit to 30 seconds to make it quicker).
-- **Automated tests.** 343 tests run the timer against a pretend Windows and a pretend Paltalk, so the rules (turns, dots, the queue, sounds, settings, pictures) can be checked without a real room.
+- **Automated tests.** 338 tests run the timer against a pretend Windows and a pretend Paltalk, so the rules (turns, dots, the queue, sounds, settings, pictures) can be checked without a real room.
 
 **The window**
 
@@ -71,7 +73,7 @@ Jump to: [Added](#added-in-20) | [Changed](#changed-in-20) | [Fixed](#fixed-in-2
 **The mic queue and who may take the mic**
 
 - **Queue jumpers are dotted.** The timer keeps the mic queue in order. Anyone who takes the mic ahead of people still waiting is dotted, and the room is told who is next. Admins are exempt.
-- **Three rules for who may take the mic**, one choice on **Settings > Time & queue**: *No jumping the line*, *Only people in the queue*, or *Strict*. Each rule includes everything in the one before it. *Only people in the queue* also dots anyone who takes the mic without being in the queue while somebody is talking or people are waiting. *Strict* dots them even when the mic is empty and nobody is waiting. Whoever is dotted is told why in the room, and a person who was already on the mic when you connected is never dotted for it.
+- **A strict queue rule.** Only people in the queue may take the mic. Anyone who takes it without being in the queue is dotted at once, even a free mic with nobody waiting, and the room is told why. A person who was already on the mic when you connected is never dotted for it. There is nothing to choose: only this one rule is offered.
 - **The front of the line has 2 minutes** (you can change it; 0 means never) to take a free mic before they lose their turn.
 
 **Sounds and the room's microphone**
@@ -94,9 +96,10 @@ Jump to: [Added](#added-in-20) | [Changed](#changed-in-20) | [Fixed](#fixed-in-2
 
 - **One name everywhere:** the program, the window, the file properties and the exe are all called **PALTALK MIC TIMER 2.0 Created by SodaDaPimp**. The old exe was called *Paltalk Mic Timer Created by SodaDaPimp.exe*.
 - **Commands only is now Free mic.** It is the same idea (the timer is off for everyone: no time limit, no warnings, no dots), now one switch at the top of **Settings > Time & queue**. Your old setting is carried over.
-- **The queue ticks became one choice.** The separate queue ticks are now the single choice of three rules above. An old config that had them is converted to the matching rule.
+- **The queue ticks became one strict rule.** The separate queue ticks and the choice of rules (*No jumping the line*, *Only people in the queue*, *Strict*) are gone; the strict rule above is the only one left, because a room with one mic does not need the other two. An old config that had them is converted and the old setting is dropped.
 - **Nothing is listed twice any more.** The *explain why*, *say so*, *grace period* and *read nickname colours* ticks are gone. Leave a message empty to say nothing, set the grace to 0 for no grace, and leave the colour list empty to skip colours. Old files are converted so everything behaves the way it did.
-- **The room is read more often:** every 0.4 seconds by default, instead of every second.
+- **The room is read more often:** every 0.25 seconds by default, instead of every second, and the right-click menu waits less before it is read.
+- **Shorter messages.** Every message the timer posts is now one short line, the extra thank-you sentence is gone, and the two queue messages lost the placeholders that no longer exist. A message you wrote yourself is kept (minus that sentence); a message that still had the old wording gets the new one.
 - **Messages are plain text.** The built-in messages have no emoji, and emoji in an older config are removed (your own edits are kept).
 - **The reply to someone who is not an admin** now reads *Name, only room admins can use the dot commands.* It no longer contains the command words.
 
@@ -112,7 +115,7 @@ Jump to: [Added](#added-in-20) | [Changed](#changed-in-20) | [Fixed](#fixed-in-2
 **Dotting and undotting (the right-click menu)**
 
 - **Dots that failed with *the right-click menu didn't show up*, *none of its entries could be read*, *the member search box didn't open* or *no Restrict option in the menu*.** The timer now finds the person by name, falls back to Paltalk's member search when the name has scrolled out of view, and reads the menu entries even when there is no *Bounce* entry. If it cannot be sure, it clicks nothing and saves what Paltalk showed (text and pictures) in the `logs` folder so the problem can be fixed.
-- **Failed dots are retried, then reported.** A dot is tried up to 3 times, and a queue jumper is retried every second up to 6 times because Paltalk's own list can lag a moment. If it still fails, you get an alert to dot the person by hand.
+- **Failed dots are retried, then reported.** A dot is tried up to 3 times, and a queue jumper is retried every half second up to 8 times because Paltalk's own list can lag a moment. If it still fails, you get an alert to dot the person by hand.
 - **The error `CoInitialize has not been called`** when dotting from a chat command (seen in the Python version). Windows' UI Automation is now started properly on the thread that drives Paltalk.
 - **The right person, every time.** Two people with the same name are never guessed between, a name that has scrolled out of sight is never clicked, a blank or highlighted first menu row is read correctly and never clicked, and a sub-menu row is never taken for *Restrict*. *Remove Restrictions* means the person is dotted.
 - **No double toggling.** Dotting someone who is already dotted, or undotting someone who is not, clicks nothing.
@@ -122,6 +125,11 @@ Jump to: [Added](#added-in-20) | [Changed](#changed-in-20) | [Fixed](#fixed-in-2
 
 **The mic queue and who may take the mic**
 
+- **The announcement no longer waits 3 seconds.** *Sam has the mic. Time limit: 2 minutes.* is now posted the moment the timer sees Sam on the mic. It used to wait until he had held the mic for 3 seconds, which looked like lag. If you want the wait back to stop quick taps filling the chat, set *Announce a new speaker after* on Settings > Time & queue to 3. A setting you had changed yourself is kept; one left at 3 becomes 0.
+- **The lag when somebody grabs the mic.** The timer re-read the room's whole chat history four times a second, looking for !commands. In a busy room that took long enough to hold up everything else, Paltalk included, so people were noticed a few seconds late. It now asks Paltalk how long the chat is (that is cheap) and reads the text only when somebody has said something, and at least every 3 seconds. A dot also reuses the look at the room the timer took a moment before, instead of reading the room a second time, and a right-click menu with nothing readable in it is not waited on again.
+- **You can see where the time goes.** Each dot's line in the Activity tab ends with how long it took and where, for example *[1.4s: window 0.1, find 0.6, menu 0.3, read 0.1, click 0.3]*. If a look at the room takes longer than 0.8 seconds, the Activity tab says *Paltalk is slow to answer*, once a minute at most.
+- **Dots are faster.** A person who takes the mic out of turn is dotted in the first look at the room that shows them, ahead of any undot that is due, and the dot no longer waits for a sound that is playing or for the mic button you are holding. The Activity tab shows how long each one took (*Sam was dotted 0.9s after taking the mic.*).
+- **The dot is no longer held back for the person who was interrupted.** The old *Only people in the queue* rule kept a dot on until the speaker had finished; it now comes off after the usual delay.
 - **A stuck hand no longer gets every speaker dotted.** A person who has walked away, or whose hand never comes down, is passed over and stops holding everybody else up.
 - **The next person in line is not dotted** when Paltalk shows them on the mic a moment after their hand goes down, and a person who gave up their place is no longer counted as waiting.
 - **The timer's own mic clicks are never a jump,** and it remembers its own name, so somebody else grabbing the mic at the same moment is not mistaken for you.
@@ -139,7 +147,7 @@ Jump to: [Added](#added-in-20) | [Changed](#changed-in-20) | [Fixed](#fixed-in-2
 
 - **A pile of long sounds could keep your mic for minutes.** The timer now never holds it for more than 90 seconds at a time.
 - **A sound that is not switched on for the room never takes the mic,** and nothing plays or clicks in TEST MODE or when sounds are off.
-- **A push-to-talk button is always let go.** It is never held forever, it is released if the room goes away or the mic never opens, a dot waits while it is held, and a locked mic that ignores the second click is let go with Ctrl.
+- **A push-to-talk button is always let go.** It is never held forever, it is released if the room goes away or the mic never opens, a dot lets go of it first instead of waiting, and a locked mic that ignores the second click is let go with Ctrl.
 - **Only the real mic button is ever clicked.** *Join queue to talk*, the little arrow next to the lock button and other buttons are never clicked.
 - **A broken sound card, a broken `.wav` file or a voice that cannot be made never stops the timer.** The sound is skipped (a broken file falls back to the built-in one) and everything else carries on.
 
@@ -173,9 +181,11 @@ Each settings file carries a version number. When an older file is read, these s
 | 2 | Settings from the very first version take the new messages and timings. |
 | 3 | Emoji are removed from messages (Paltalk cannot show emoji sent by a bot). The old send-encoding and sound-threshold settings are dropped. |
 | 4 | An old *not an admin* reply that contained the command words is removed, because it set off the timer itself. |
-| 5 | A room check interval of exactly 1 second goes back to the new faster default (0.4 seconds). |
+| 5 | A room check interval of exactly 1 second goes back to the new faster default (0.25 seconds). |
 | 6 | Options that said the same thing twice are merged: an *off* tick becomes a grace of 0, an empty message or an empty colour list. |
-| 7 | *Commands only* becomes *Free mic*, and the separate queue ticks become the single queue rule. |
+| 7 | *Commands only* becomes *Free mic*, and the separate queue ticks are merged into one queue rule. |
+| 8 | Only the strict queue rule is left, so the rule choice is dropped. A room check of exactly 0.4 seconds and a menu wait of exactly 0.6 seconds go to the new, faster defaults (0.25 and 0.3). Messages still in the old default wording take the new, shorter wording; your own messages are kept, minus the extra thank-you sentence. The queue-only message becomes the *took the mic without being in the queue* message. |
+| 9 | *Announce a new speaker after* goes from 3 seconds to 0 (a different number you chose is kept). |
 
 A config file written by the Python version is read as it is.
 
@@ -213,19 +223,19 @@ This is the default behaviour with a 2-minute limit. Every time and message belo
 | When | What happens |
 |---|---|
 | 0:00 | Someone takes the mic. Their timer starts. |
-| 0:03 | The room reads: *Sam has taken the mic. Allocated time: 2 minutes.* (You hear a soft pop.) The 3-second wait stops quick taps from filling the chat. |
-| 0:30, 1:00, 1:30 | A time check: *1 minute 30 seconds remaining for Sam.* |
-| 1:50 | The final warning: *10 seconds left! Please wrap up and pass the mic.* (Three quick beeps.) |
-| 2:00 | Time is up. The bell rings. The room reads: *Sam, time is up! Release the mic now or you will be dotted in 5 seconds.* |
-| 2:05 | Still talking? The timer dots Sam, plays a double ding, and explains in the room why Sam was dotted. |
-| 2:10 | The dot comes off by itself and the room reads: *Sam, your dot has been removed. Thanks for understanding!* (A chime.) Sam can raise a hand to get back in the queue. |
+| 0:03 | The room reads: *Sam has the mic. Time limit: 2 minutes.* (You hear a soft pop.) The 3-second wait stops quick taps from filling the chat. |
+| 0:30, 1:00, 1:30 | A time check: *1 minute 30 seconds left for Sam.* |
+| 1:50 | The final warning: *10 seconds left - please wrap up.* (Three quick beeps.) |
+| 2:00 | Time is up. The bell rings. The room reads: *Sam, time is up. Release the mic or you will be dotted in 5 seconds.* |
+| 2:05 | Still talking? The timer dots Sam, plays a double ding, and tells the room why: *Sam was dotted for going over the 2-minute limit. Raise your hand to get back in line.* |
+| 2:10 | The dot comes off by itself and the room reads: *Sam, your dot has been removed.* (A chime.) Sam can raise a hand to get back in the queue. |
 
 - **Grace period set to 0?** The bell and the dot both happen at 2:00, with no warning message in between.
 - **Admins and untimed colours** are never timed or dotted. Their card turns grey and says *timer paused*.
-- **Queue jumpers** are dotted at once (see *The mic queue* below). With the **Only people in the queue** rule (or **Strict**), so is anyone who takes the mic without being in the queue (see *Who may take the mic* below).
+- **Anyone who takes the mic out of turn** is dotted at once: somebody who was not in the queue, or who skipped ahead of people still waiting (see *The mic queue* below).
 - **A short blip** off the mic does not end a turn. If someone drops off and is back within a few seconds, their timer simply continues.
 - **A dot given with !dot-name** stays on until an admin types `!undot-name`.
-- **Silent mic?** If exactly one person is on the mic and nothing has been heard for 15 seconds, the timer posts *Mic check Sam - no audio detected.* and plays a buzzer.
+- **Silent mic?** If exactly one person is on the mic and nothing has been heard for 15 seconds, the timer posts *Sam, no audio detected - please check your mic.* and plays a buzzer.
 - When it connects and when it disconnects, the timer posts a one-line credit message. That is built in and cannot be switched off.
 
 ## The main window
@@ -298,7 +308,7 @@ The Settings tab has a row of six small tabs across the top of it: **General**, 
 
 | Setting | Default | What it does |
 |---|---|---|
-| Turn the timer off for everyone (free mic) | Off | Everybody may talk on the mic for as long as they like: no time limit, no warnings, no auto-dot, no silent-mic check and no queue rules. The MIC QUEUE list still shows who is waiting, and admins can still type !dot-name and !undot-name (if that is ticked on the Admins page). The badge at the top shows **FREE MIC** while it is on. Untick it to turn the timer and the queue rule back on. |
+| Turn the timer off for everyone (free mic) | Off | Everybody may talk on the mic for as long as they like: no time limit, no warnings, no auto-dot, no silent-mic check and no queue rules. The MIC QUEUE list still shows who is waiting, and admins can still type !dot-name and !undot-name (if that is ticked on the Admins page). The badge at the top shows **FREE MIC** while it is on. Untick it to turn the timer and the queue back on. |
 
 **Time limit** card (only used while Free mic is off):
 
@@ -306,16 +316,13 @@ The Settings tab has a row of six small tabs across the top of it: **General**, 
 |---|---|---|
 | Mic time limit (seconds) | 120 | How long one turn may last. 120 = 2 minutes, 180 = 3 minutes. The figure beside the box shows it as minutes:seconds. |
 | Final warning - seconds before the limit | 10 | Posts the final-warning message and plays the final-warning sound this many seconds before time is up. 0 = no final warning. |
-| Time check - post the time left every (seconds) | 30 | How often the room is told how much time is left, for example *1 minute remaining for Sam*. 0 = no time checks. A check is skipped if it would land on top of the final warning. |
-| Announce a new speaker after (seconds) | 3 | Posts *Sam has taken the mic. Allocated time: 2 minutes.* once someone has held the mic this long. The wait stops quick taps from filling the chat. 0 = announce at once. |
+| Time check - post the time left every (seconds) | 30 | How often the room is told how much time is left, for example *1 minute left for Sam*. 0 = no time checks. A check is skipped if it would land on top of the final warning. |
+| Announce a new speaker after (seconds) | 0 | Posts *Sam has the mic. Time limit: 2 minutes.* the moment the timer sees someone on the mic (0). Raise it to wait until they have held the mic that long, so quick taps do not fill the chat. The same person tapping again within 15 seconds is not announced twice. |
 
-**Who may take the mic?** card. Pick **one** of three rules. **Each rule includes everything the rule above it does** (the details are under *Who may take the mic* below):
+**The mic queue** card. There is one rule and no choices to make: while the timer is on, **only people in the queue may take the mic** (the details are under *The mic queue* below). One setting:
 
 | Setting | Default | What it does |
 |---|---|---|
-| No jumping the line (recommended) | On | Nobody may take the mic ahead of people who are still waiting in the queue. If someone does, they are dotted and the room is told who is next. |
-| Only people in the queue | - | Everything in *No jumping the line*, plus: anyone who is **not** in the queue and takes the mic while somebody is talking or people are waiting is dotted. The dot stays on until the person they interrupted is done speaking. |
-| Strict: only people in the queue, always | - | Everything in the two rules above, plus: anyone who takes the mic without being in the queue is dotted, even when nobody is talking and nobody is waiting. People must raise their hand first. |
 | Next in line has to take an empty mic within (seconds) | 120 | If the person at the front of the queue leaves an empty mic alone for this long (120 = 2 minutes), the mic is open to everyone else. This stops someone who walked away from getting everybody dotted. 0 = the front of the line never loses their turn. |
 
 ### Time's up
@@ -324,7 +331,7 @@ The Settings tab has a row of six small tabs across the top of it: **General**, 
 
 | Setting | Default | What it does |
 |---|---|---|
-| Dot people who go over the limit (auto-dot) | On | A dot (restriction) takes the person off the mic. Untick it and people who go over the time limit only get the warning and the bell; they are not dotted. The mic queue rules (Settings > Time & queue) still dot people who break them. |
+| Dot people who go over the limit (auto-dot) | On | A dot (restriction) takes the person off the mic. Untick it and people who go over the time limit only get the warning and the bell; they are not dotted. The mic queue rule (Settings > Time & queue) still dots people who break it. |
 | Grace period after the bell (seconds) | 5 | The bell rings at the limit and the person has this long to let go before the dot. **0 = no grace:** the bell and the dot happen the instant time is up. |
 | Remove the dot - seconds after the explanation | 5 | How long the dot stays on after the explanation is posted. A dot an admin gave with !dot-name is not removed automatically. |
 
@@ -370,23 +377,21 @@ The exact words the timer posts. Edit them freely. **Leave a box empty and that 
 | {undot_in} | seconds until the dot comes off |
 | {admin} | the admin who typed a command |
 | {action} | dotted or undotted |
-| {next} | the person next in line (used in the queue jump and queue-only messages) |
-| {speaker} | who was interrupted, e.g. Sam or Sam and Ana (used in the queue-only message) |
-| {dot_off} | when the dot comes off, e.g. *when Sam is done speaking* or *in 5 seconds* (used in the queue-only message) |
+| {next} | the person next in line (used in the two queue messages) |
 
 And when each message is posted:
 
 | Message | When it is posted |
 |---|---|
-| Someone took the mic | After they have held the mic for the announce time (Settings > Time & queue). |
+| Someone took the mic | As soon as the timer sees them on the mic, or after the announce delay in Settings > Time & queue if you set one. |
 | Time check | Every few seconds while they talk (Settings > Time & queue). |
 | Final warning | Shortly before the limit (Settings > Time & queue). |
 | Time is up - grace period | At the limit, when the grace period is more than 0 seconds. |
 | Time is up - no dot | At the limit, only when auto-dot is off or the dot could not be done. |
 | After a dot - why | After someone is dotted for going over the limit. Empty = say nothing. |
 | After the dot is removed | When the dot comes off. Empty = say nothing. |
-| Someone jumped the queue | Right after a queue jumper is dotted (rule *No jumping the line* or stricter). {next} is the person who was next in line. |
-| Took the mic without being in the queue | Right after someone who was not in the queue is dotted (rule *Only people in the queue* or *Strict*). {speaker} is who they interrupted and {dot_off} says when the dot comes off. |
+| Someone jumped the queue | Right after somebody who was in the queue, but behind others, is dotted for taking the mic first. {next} is the person who was next in line. |
+| Took the mic without being in the queue | Right after somebody who was not in the queue at all is dotted. {next} is the person who was next in line, if anybody was waiting. |
 | Silent mic | When the dead air check finds a silent mic. |
 | An admin dotted someone | After a successful !dot-name. |
 | An admin removed a dot | After a successful !undot-name. |
@@ -445,56 +450,36 @@ Both are made for the **Final warning** (the last seconds before the limit), but
 
 ## The mic queue and queue jumpers
 
-The **MIC QUEUE** list in the timer is numbered 1, 2, 3... in the order hands went up, the same order as Paltalk's Mic Queue. When someone takes the mic while people ahead of them are **still waiting**, they have jumped the line. The timer dots them straight away, so the person who was next in line can talk, and posts a message naming who is next.
-
-| Situation | What the timer does |
-|---|---|
-| The person at #1 takes the mic | Nothing. That is their turn. |
-| #2 or #3 takes the mic while #1 is still waiting | Dots them. #1 is named as next in line. |
-| Someone who was not in the queue at all takes the mic while others are waiting | Dots them. |
-| Nobody is waiting | Nothing, except under the **Strict** rule (see *Who may take the mic* below). |
-| The person who jumped is an admin or an untimed colour | Never dotted. The Activity tab notes the jump. |
-| Two mics are free and #1 and #2 both take one | Nothing. Nobody was skipped. |
-| #1 leaves an empty mic alone for 2 minutes | #1 loses their turn at the front, so someone who walked away cannot get everyone else dotted. #2 then gets the same time, and so on. You can change the time or set it to 0 to switch this off. |
-| Two people raised their hands at the very same moment | Nothing. Nobody can tell who was first. |
+The **MIC QUEUE** list in the timer is numbered 1, 2, 3... in the order hands went up, the same order as Paltalk's Mic Queue. The rule is strict and always on while the timer is on: **only people in the queue may take the mic, and in order.** Whoever takes it without being in the queue, or ahead of people who are still waiting, is dotted straight away, so the next person in line can talk, and the room is told why. People must raise their hand first.
 
 - The dot comes off after the *Remove the dot* delay (Settings > Time's up). The person raises their hand again to go to the back of the line.
 - The **Jumped** column on the Speakers tab counts how often each person did it.
-- No jumping the line is part of all three rules in Settings > Time & queue, so it is always on while the timer is on. Nothing is dotted in TEST MODE or while **Free mic** is on.
+- Nothing is dotted in TEST MODE or while **Free mic** is on.
 - **Try it safely:** open the Practice room. Raise hands for Alice and then BigMike (a few seconds apart), then press *Take mic* for Carmen_77. Untick TEST MODE first to see her really dotted; the transcript then shows the message naming who is next. With TEST MODE on, the Activity tab says *Would dot Carmen_77*.
 
-### Who may take the mic
+### Who gets dotted, and who does not
 
-On **Settings > Time & queue** the **Who may take the mic?** card has three rules. Pick one; **each rule includes everything the one before it does**. (If you want nobody dotted at all, use the **Free mic** switch at the top of the page instead: it turns the whole timer off.)
-
-| Rule | What the timer does |
-|---|---|
-| No jumping the line (recommended) | Dots anyone who takes the mic while people ahead of them in the queue are still waiting, and names who is next. |
-| Only people in the queue | Everything above, plus: dots anyone who is **not** in the queue and takes the mic while somebody is talking or people are waiting. **The dot stays on until the person they interrupted is done speaking.** Then the timer removes it after the usual delay (Settings > Time's up). A free mic with nobody waiting is left alone. |
-| Strict: only people in the queue, always | Everything above, plus: dots anyone who is not in the queue and takes a **free** mic when nobody is waiting. Nobody may speak without raising a hand first. |
-
-Whoever is dotted is told **why** in the room: the *Someone jumped the queue* message when someone in the queue skips ahead of the people before them, the *Took the mic without being in the queue* message when someone who is not in the queue takes the mic. You can change those words on the Messages page.
+Only people in the queue, in order. There is nothing to choose: the old *No jumping the line* and *Only people in the queue* options are gone, and the one rule that stayed is the strict one. (If you want nobody dotted at all, use the **Free mic** switch at the top of Settings > Time & queue: it turns the whole timer off.)
 
 | Situation | What the timer does |
 |---|---|
-| Somebody who is #3 in the queue takes the mic while #1 and #2 are still waiting | (All three rules) Dots them: they jumped the line. #1 is named as next. |
-| Sam is talking and somebody who is not in the queue takes a second mic | (Only people in the queue, Strict) Dots them at once and keeps the dot on until Sam is done. The room is told who was interrupted and when the dot comes off. |
-| Sam is talking and somebody from the queue takes a second mic | Nothing. They were waiting, so they may. |
-| Nobody is talking, people are waiting, and somebody who is not in the queue takes the mic | (Only people in the queue, Strict) Dots them. The dot comes off after the usual delay, since nobody was interrupted. |
-| Nobody is talking, nobody is waiting, and somebody takes the mic | (Strict) Dots them and says why. With the other rules: nothing. |
+| Somebody who is not in the queue takes the mic | Dots them at once, even when nobody is talking and nobody is waiting. The room is told why, and who is next if somebody was waiting. |
+| Somebody who is #3 in the queue takes the mic while #1 and #2 are still waiting | Dots them: they jumped the line. #1 is named as next. |
+| The person at #1 takes the mic | Nothing. That is their turn. |
+| Sam is talking and somebody from the queue takes a second mic | Nothing, if nobody ahead of them is still waiting. They were in line, so they may. |
 | Somebody was already on the mic when you clicked Connect | Never dotted for that. |
-| Two people take the mic in the same second and neither was in the queue | Nothing. Nobody can tell who was first. |
-| Somebody who was in the queue takes the mic at the same moment as somebody who was not | Only the one who was not in the queue is dotted. |
-| Several people were talking | The dot stays on until all of them are done. |
-| The person who took the mic is an admin | Never dotted. The Activity tab notes it. |
-| The speaker never stops | The dot comes off by itself after 30 minutes. |
+| Two mics are free and #1 and #2 both take one | Nothing. Nobody was skipped. |
+| Two people raised their hands at the very same moment | Nothing. Nobody can tell who was first. |
+| Somebody was in the queue but gave up their place, and later takes the mic | Dots them: they are not in the queue any more. |
+| The person who took the mic is an admin or an untimed colour | Never dotted. The Activity tab notes it. |
+| #1 leaves an empty mic alone for 2 minutes | #1 loses their turn at the front, so someone who walked away cannot get everyone else dotted. |
+| The dot could not be done | The timer tries again quickly, eight times, then says so in the Activity tab so you can dot them by hand. |
 
 - A person is *in the queue* while their hand is up, and for a few seconds after they lower it, because Paltalk can drop the hand a moment before it shows them on the mic.
-- Someone who was dotted by this rule is not counted as a speaker when the next person takes the mic, so the dots never wait on each other.
+- **Fast:** the timer looks at the room four times a second, and the dot goes first. A dot never waits for an undot, for a sound that is playing, or for the mic button you are holding. The Activity tab shows how long it took: *Sam was dotted 0.9s after taking the mic.*
 - A **name colour** can only be read when exactly one person is on the mic, so the untimed-colour exemption cannot protect someone who takes the mic while another person is talking. Add trusted people to the **Admins** list (Settings > Admins).
 - Closing the timer, or choosing a different room, removes every dot it was holding.
-- Nothing is dotted in TEST MODE or while **Free mic** is on. With TEST MODE on, the Activity tab says *Would dot ...*.
-- **Try it first** with TEST MODE ticked and watch the Activity tab, especially with **Strict**. In a room where Paltalk puts someone on the mic in the same second they raise a hand, the timer may never have seen the hand and will dot them. If that happens, choose **Only people in the queue** instead.
+- **Try it first** with TEST MODE ticked and watch the Activity tab. In a room where Paltalk puts someone on the mic in the same second they raise a hand, the timer may not have seen the hand yet and will dot them. If that happens a lot, put those people on the Admins list or use **Free mic**.
 
 ## Admin commands
 
@@ -602,36 +587,31 @@ Join the room in Paltalk first, then click Refresh. If Paltalk was started as ad
 
 Open Tools and click **Read the room now**. If it reports a problem, click **Run diagnostics**.
 
-### Someone jumped the queue and was not dotted
+### Someone took the mic out of turn and was not dotted
 
 - Is **TEST MODE** ticked (Settings > General)? The Activity tab then says *Would dot ...* and nobody is really dotted.
-- Is **Free mic** ticked on Settings > Time & queue (the badge at the top says FREE MIC)? Then the timer is off and nobody is dotted. The first line in the Activity tab when the timer starts says which rule is on.
-- Is the person on your **Admins** list, or an untimed name colour? Admins are never dotted. The Activity tab says *Not dotted: they are an admin or untimed*.
-- Look in the Activity tab right after the jump. A line starting **QUEUE JUMP** means the timer saw it and tried to dot. A line saying *can't tell who was first* means two people raised their hands at the same moment, or were already in the queue when you clicked Connect. A line saying *had already let a free mic go by* means the front of the line left a free mic alone longer than the time in Settings > Time & queue.
-- If you see no line at all, the timer did not see the queue: check that the **MIC QUEUE** list in the timer window shows the people waiting. If it is empty while Paltalk's Mic Queue is not, run Tools > **Run diagnostics** while two people are in the queue, and include the file in your bug report.
-- If it says *Couldn't dot ... for jumping the queue*, the dot itself failed (see *It does not dot anyone* below). You must be an admin or the owner of the room.
-- Make sure you rebuilt the program: the first Activity line should say *Build: queue-jump rule v2*.
+- Is **Free mic** ticked on Settings > Time & queue (the badge at the top says FREE MIC)? Then the timer is off and nobody is dotted. The first line in the Activity tab when the timer starts says whether the queue is being enforced.
+- Is the person on your **Admins** list, or an untimed name colour? Admins are never dotted. The Activity tab says *Not dotted: they are an admin or untimed*. A name colour only counts when the person is alone on the mic.
+- Was the person already on the mic when you clicked Connect? They are never dotted for that.
+- Look in the Activity tab right after it happened. A line starting **NOT IN QUEUE** (took the mic without raising a hand) or **QUEUE JUMP** (was in the queue, but behind others) means the timer saw it and tried to dot. A line saying *can't tell who was first* means two people raised their hands at the same moment, or were already in the queue when you clicked Connect. A line saying *had already let a free mic go by* means the front of the line left a free mic alone longer than the time in Settings > Time & queue.
+- If you see no line at all, the timer did not see the person: check that the **ON THE MIC** list in the timer window shows them. If the **MIC QUEUE** list is empty while Paltalk's Mic Queue is not, run Tools > **Run diagnostics** while two people are in the queue, and include the file in your bug report.
+- If it says *Couldn't dot ...*, the dot itself failed (see *It does not dot anyone* below). You must be an admin or the owner of the room.
 
-### Someone took the mic without being in the queue and was not dotted
+### Someone was dotted for taking the mic out of turn and should not have been
 
-- Is **TEST MODE** ticked (Settings > General)? The Activity tab then says *Would dot ...*.
-- Is the rule **Only people in the queue** (or **Strict**) chosen on Settings > Time & queue? The first line in the Activity tab when the timer starts says which rule is on.
-- Was the mic free with nobody waiting? Only the **Strict** rule dots in that case. With **Only people in the queue** the Activity tab says *the mic was free and nobody was waiting* and nothing is done. Was the person already on the mic when you clicked Connect? They are never dotted for that.
-- Is the person on your **Admins** list? Admins are never dotted. A name colour only counts when the person is alone on the mic.
-- A line starting **QUEUE ONLY** (or **QUEUE ONLY (strict)**) in the Activity tab means the timer saw it and tried to dot. If it says *Couldn't dot ...* the dot itself failed (see *It does not dot anyone* below). You must be an admin or the owner of the room.
-
-### Someone was dotted for taking the mic without being in the queue and should not have been
-
-- Check the Activity tab. The line starting *QUEUE ONLY* says who was talking and who was waiting. The person's hand must have been up before they took the mic: if Paltalk gave them the mic within a second of the hand going up, the timer never saw the hand.
-- Add trusted people to the Admins list (Settings > Admins), or choose a gentler rule in Settings > Time & queue. With **Strict**, someone Paltalk puts on the mic in the same second they raise a hand can be dotted: **Only people in the queue** does not do that.
+- Check the Activity tab. The line starting *NOT IN QUEUE* or *QUEUE JUMP* says who was next in line. The person's hand must have been up before they took the mic: if Paltalk gave them the mic within a second of the hand going up, the timer may not have seen the hand yet.
+- The timer learns the queue by watching hands go up. People who were already in the queue when you clicked Connect count as equal: they are never judged against each other. It cannot know their real order.
+- Add trusted people to the Admins list (Settings > Admins). Admins are never dotted.
+- To switch the timer and the queue off for a while, tick **Free mic** at the top of Settings > Time & queue. To be more patient with someone at the front who is slow to take the mic, raise *Next in line has to take an empty mic within (seconds)*.
 - To take a dot off early, type `!undot-nickname` as an admin, or remove it by hand in Paltalk.
 
-### Someone was dotted for jumping the queue and should not have been
+### The timer notices people a few seconds late
 
-- The timer learns the queue by watching hands go up. People who were already in the queue when you clicked Connect count as equal: they are never judged against each other. It cannot know their real order.
-- Check the Activity tab. The line starting *QUEUE JUMP* names who was waiting ahead of them and for how long. If that person had really lowered their hand, the timer allows a few seconds before it notices.
-- Admins are never dotted. Add trusted people to the Admins list (Settings > Admins).
-- To switch the timer and the rule off for a while, tick **Free mic** at the top of Settings > Time & queue. To be more patient with someone at the front who is slow to take the mic, raise *Next in line has to take an empty mic within (seconds)*.
+- Look in the Activity tab for *Paltalk is slow to answer: reading the room took ...s*. It says how long Paltalk took to answer the timer, in seconds, split into the room list and the chat. Under 0.3 seconds each is normal.
+- Every dot's line ends with *[1.4s: window 0.1, find 0.6, menu 0.3, read 0.1, click 0.3]*: the time in total and where it went. A big *find* means Paltalk's window is slow to describe itself; a big *menu* means its right-click menu is slow to open. Send me those lines if a dot is slow.
+- How long after the person grabbed the mic it was dotted is in the line *Sam was dotted 0.9s after taking the mic.*
+- Paltalk itself can be the slow part: it may take a moment after somebody clicks the mic before its own list shows them on it, and a timer cannot know that. Close the other room windows you are not using and keep Paltalk's window open (not minimized).
+- The room is looked at four times a second (*poll_interval_ms* in config.json, 250). Lowering it further does not help when Paltalk takes longer than that to answer.
 
 ### It does not dot anyone
 
