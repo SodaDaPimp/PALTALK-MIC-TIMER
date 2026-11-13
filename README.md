@@ -6,8 +6,6 @@
 ![Language: C++17](https://img.shields.io/badge/language-C%2B%2B17-00599C)
 ![Made for Paltalk room admins](https://img.shields.io/badge/made%20for-Paltalk%20admins-C81E2D)
 
-![Screenshot of PALTALK MIC TIMER 2.0](https://github.com/SodaDaPimp/PALTALK-MIC-TIMER/blob/main/My%20Snapshot_3.jpg?raw=true)
-
 ![PALTALK MIC TIMER 2.0 after the update](https://github.com/SodaDaPimp/PALTALK-MIC-TIMER/blob/main/paltalk%20timer%20update.png?raw=true)
 
 ## Table of contents
