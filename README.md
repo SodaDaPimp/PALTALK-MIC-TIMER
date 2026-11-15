@@ -1,4 +1,5 @@
 # PALTALK MIC TIMER 3.0
+THIS IS THE ONLY PALTALK TIMER THAT ACTUALLY WORKS WITHOUT ANY ISSUES. FIND ANY BUGS OR U GET ANY CRASHES LET SodaDaPimp know.
 
 **A Windows mic timer, mic queue and auto-dot tool for Paltalk room admins. Written in C++.**
 
